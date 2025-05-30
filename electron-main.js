@@ -9,6 +9,9 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
     },
+    transparent: true,
+    frame: false, // フレームを非表示にする
+    resizable: false, // ウィンドウリサイズ禁止
   });
 
   // 開発時はViteサーバー、ビルド後はローカルファイルをロード

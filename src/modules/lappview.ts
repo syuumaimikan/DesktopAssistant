@@ -25,8 +25,7 @@ export class LAppView {
    */
   public constructor() {
     this._programId = null;
-    this._back = null;
-    this._gear = null;
+
 
     // タッチ関係のイベント管理
     this._touchManager = new TouchManager();
@@ -85,12 +84,6 @@ export class LAppView {
     this._touchManager = null;
     this._deviceToScreen = null;
 
-    this._gear.release();
-    this._gear = null;
-
-    this._back.release();
-    this._back = null;
-
     this._subdelegate.getGlManager().getGl().deleteProgram(this._programId);
     this._programId = null;
   }
@@ -100,13 +93,6 @@ export class LAppView {
    */
   public render(): void {
     this._subdelegate.getGlManager().getGl().useProgram(this._programId);
-
-    if (this._back) {
-      this._back.render(this._programId);
-    }
-    if (this._gear) {
-      this._gear.render(this._programId);
-    }
 
     this._subdelegate.getGlManager().getGl().flush();
 
@@ -124,47 +110,6 @@ export class LAppView {
   public initializeSprite(): void {
     const width: number = this._subdelegate.getCanvas().width;
     const height: number = this._subdelegate.getCanvas().height;
-    const textureManager = this._subdelegate.getTextureManager();
-    const resourcesPath = LAppDefine.ResourcesPath;
-
-    let imageName = '';
-
-    // 背景画像初期化
-    imageName = LAppDefine.BackImageName;
-
-    // 非同期なのでコールバック関数を作成
-    const initBackGroundTexture = (textureInfo: TextureInfo): void => {
-      const x: number = width * 0.5;
-      const y: number = height * 0.5;
-
-      const fwidth = textureInfo.width * 2.0;
-      const fheight = height * 0.95;
-      this._back = new LAppSprite(x, y, fwidth, fheight, textureInfo.id);
-      this._back.setSubdelegate(this._subdelegate);
-    };
-
-    textureManager.createTextureFromPngFile(
-      resourcesPath + imageName,
-      false,
-      initBackGroundTexture
-    );
-
-    // 歯車画像初期化
-    imageName = LAppDefine.GearImageName;
-    const initGearTexture = (textureInfo: TextureInfo): void => {
-      const x = width - textureInfo.width * 0.5;
-      const y = height - textureInfo.height * 0.5;
-      const fwidth = textureInfo.width;
-      const fheight = textureInfo.height;
-      this._gear = new LAppSprite(x, y, fwidth, fheight, textureInfo.id);
-      this._gear.setSubdelegate(this._subdelegate);
-    };
-
-    textureManager.createTextureFromPngFile(
-      resourcesPath + imageName,
-      false,
-      initGearTexture
-    );
 
     // シェーダーを作成
     if (this._programId == null) {
@@ -229,10 +174,7 @@ export class LAppView {
     }
     lapplive2dmanager.onTap(x, y);
 
-    // 歯車にタップしたか
-    if (this._gear.isHit(posX, posY)) {
-      lapplive2dmanager.nextScene();
-    }
+
   }
 
   /**
@@ -276,8 +218,8 @@ export class LAppView {
   _deviceToScreen: CubismMatrix44; // デバイスからスクリーンへの行列
   _viewMatrix: CubismViewMatrix; // viewMatrix
   _programId: WebGLProgram; // シェーダID
-  _back: LAppSprite; // 背景画像
-  _gear: LAppSprite; // ギア画像
+
+
   _changeModel: boolean; // モデル切り替えフラグ
   _isClick: boolean; // クリック中
   private _subdelegate: LAppSubdelegate;

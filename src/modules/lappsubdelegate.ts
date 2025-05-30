@@ -129,7 +129,7 @@ export class LAppSubdelegate {
     const gl = this._glManager.getGl();
 
     // 画面の初期化
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
     // 深度テストを有効化
     gl.enable(gl.DEPTH_TEST);
@@ -142,7 +142,7 @@ export class LAppSubdelegate {
     gl.clearDepth(1.0);
 
     // 透過設定
-    gl.enable(gl.BLEND);
+    gl.enable(gl.ALPHA);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     // 描画更新
